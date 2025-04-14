@@ -168,7 +168,7 @@ public class CreditAccountTest {
     @Test
     public void shouldYearChangeNegativeBalance() {
         CreditAccount account = new CreditAccount(
-                1_000,
+                -1_000,
                 5_000,
                 15
         );
