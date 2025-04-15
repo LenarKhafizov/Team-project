@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 
 public class SavingAccountTest {
 
+    // pay
+
     @Test
     public void shouldReturnCorrectBalanceAfterPayment() { //уменьшение баланса на сумму покупки
         SavingAccount account = new SavingAccount(
@@ -44,6 +46,8 @@ public class SavingAccountTest {
         Assertions.assertEquals(0, account.getBalance());
     }
 
+    // add
+
     @Test
     public void shouldReturnCorrectBalanceAfterAddition() {  //пополнение баланса на сумму пополнения
         SavingAccount account = new SavingAccount(
@@ -57,36 +61,26 @@ public class SavingAccountTest {
         Assertions.assertEquals(6_000, account.getBalance());
     }
 
-
     @Test
-    public void addingMoreThanTheMaximumAmountToYourBalance() { //пополнение баланса ПРЕВЫШАЮЩИЙ МАХ БАЛАНС
+    public void addingMoreThanTheMaximumAmountToYourBalance() { //пополнение баланса превышающий мах баланс
         SavingAccount account = new SavingAccount(
                 2_000,
                 1_000,
                 10_000,
                 5);
 
-        account.add(10_000);
+        account.add(15_000);
 
-        Assertions.assertEquals(10_000, account.getBalance());
+        Assertions.assertEquals(2_000, account.getBalance());
     }
 
-    @Test
-    public void shouldAllowAddingUpToMaxBalance() {  //пополнение баланса до мах значения
-        SavingAccount account = new SavingAccount(
-                2_000,
-                1_000,
-                10_000,
-                5);
-
-        Assertions.assertEquals(10_000, account.getBalance());
-    }
+    // конструтор
 
     @Test
-    public void shouldThrowExceptionForNegativeRate() { //Проверка инициализации с отрицательной ставкой
+    public void shouldThrowExceptionForNegativeRate() { //Отрицательная ставка
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             new SavingAccount(
-                    5_000,
+                    2_000,
                     1_000,
                     10_000,
                     -5);
@@ -94,7 +88,64 @@ public class SavingAccountTest {
     }
 
     @Test
-    public void shouldCalculateYearlyInterestCorrectly() { // Проверка расчёта процентов
+    public void ItShouldQenerateAnExceptionIfThereIsABalanceOfValidValues() { // баланс допустимых значений.
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new SavingAccount(
+                    2_000,
+                    1_000,
+                    10_000,
+                    5);
+        });
+    }
+
+    @Test
+    public void shouldThrowExceptionIfMinBalanceMoreThanMaxBalance() { // Минимальный баланс больше максимального
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new SavingAccount(
+                    2_000,
+                    12_000,
+                    10_000,
+                    5);
+        });
+    }
+
+    @Test
+    public void shouldThrowExceptionIfInitialBalanceLessThanMin() { // Начальный баланс меньше минимального
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new SavingAccount(
+                    500,
+                    1_000,
+                    10_000,
+                    5);
+        });
+    }
+
+    @Test
+    public void shouldThrowExceptionIfInitialBalanceGreaterThanMax() { // Начальный баланс больше максимального
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new SavingAccount(
+                    15_000,
+                    1_000,
+                    10_000,
+                    5);
+        });
+    }
+
+    // yearChange
+
+    @Test
+    public void shouldCalculateYearlyInterestCorrectly5Percent() { // Проверка расчёта процентов
+        SavingAccount account = new SavingAccount(
+                2_000,
+                1_000,
+                10_000,
+                5);
+
+        Assertions.assertEquals(100, account.yearChange());
+    }
+
+    @Test
+    public void shouldCalculateYearlyInterestCorrectly() { // Проверка расчёта процентов c другой % ставкой
         SavingAccount account = new SavingAccount(
                 2_000,
                 1_000,
@@ -104,8 +155,22 @@ public class SavingAccountTest {
         Assertions.assertEquals(200, account.yearChange());
     }
 
+    // гетторы
+
     @Test
-    public void shouldReturnMinBalance() { //проверка корректного мин баланса
+    public void checkingTheCurrentBalance() {  // проверка текущего баланса
+        SavingAccount account = new SavingAccount(
+                7_000,
+                1_000,
+                10_000,
+                5);
+
+        Assertions.assertEquals(7_000, account.getBalance());
+    }
+
+
+    @Test
+    public void shouldReturnMinBalance() { //проверка корректного мин значения баланса
         SavingAccount account = new SavingAccount(
                 2_000,
                 1_000,
@@ -115,9 +180,8 @@ public class SavingAccountTest {
         Assertions.assertEquals(1_000, account.getMinBalance());
     }
 
-    // Проверяет, что геттер возвращает корректный maxBalance
     @Test
-    public void shouldReturnMaxBalance() { //проверка корректного макс баланса
+    public void shouldReturnMaxBalance() { //проверка корректного макс значения баланса
         SavingAccount account = new SavingAccount(
                 2_000,
                 1_000,
@@ -126,7 +190,6 @@ public class SavingAccountTest {
 
         Assertions.assertEquals(10_000, account.getMaxBalance());
     }
-
 }
 
 
