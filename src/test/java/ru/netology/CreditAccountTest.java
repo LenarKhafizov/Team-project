@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 public class CreditAccountTest {
 
     @Test
-    public void shouldAddToPositiveBalance() {
+    public void shouldAddToPositiveBalance() { // пополнение счета с неотрицательным балансом
         CreditAccount account = new CreditAccount(
                 0,
                 5_000,
@@ -17,7 +17,7 @@ public class CreditAccountTest {
     }
 
     @Test
-    public void shouldAddToInitialBalance() {
+    public void shouldAddToInitialBalance() { // пополнение счета с положительным балансом
         CreditAccount account = new CreditAccount(
                 1_000,
                 5_000,
@@ -28,7 +28,7 @@ public class CreditAccountTest {
     }
 
     @Test
-    public void shouldAccountNegativeRate() {
+    public void shouldAccountNegativeRate() { // создание счета с отрицательной ставкой кредитования
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             CreditAccount account = new CreditAccount(
                     1_000,
@@ -39,7 +39,7 @@ public class CreditAccountTest {
     }
 
     @Test
-    public void shouldAccountNegativeInitialBalance() {
+    public void shouldAccountNegativeInitialBalance() { // создание счета с отрицательным начальным балансом
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             CreditAccount account = new CreditAccount(
                     -1_000,
@@ -50,7 +50,7 @@ public class CreditAccountTest {
     }
 
     @Test
-    public void shouldAccountNegativeCreditLimit() {
+    public void shouldAccountNegativeCreditLimit() { // создание счета с отрицательным кредитным лимитом
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             CreditAccount account = new CreditAccount(
                     1_000,
@@ -61,7 +61,7 @@ public class CreditAccountTest {
     }
 
     @Test
-    public void shouldPayBollWithPositiveBalance() {
+    public void shouldPayBollWithPositiveBalance() { // оплата с начальным балансом в пределах кредитного лимита
         CreditAccount account = new CreditAccount(
                 1_000,
                 5_000,
@@ -71,7 +71,7 @@ public class CreditAccountTest {
     }
 
     @Test
-    public void shouldPayBollNegativeAmount() {
+    public void shouldPayBollNegativeAmount() { // оплата отрицательной суммы
         CreditAccount account = new CreditAccount(
                 1_000,
                 5_000,
@@ -81,7 +81,7 @@ public class CreditAccountTest {
     }
 
     @Test
-    public void shouldPayBollAmountAboveLimit() {
+    public void shouldPayBollAmountAboveLimit() { // оплата с начальным балансом сверх кредитного лимита
         CreditAccount account = new CreditAccount(
                 1_000,
                 5_000,
@@ -91,7 +91,7 @@ public class CreditAccountTest {
     }
 
     @Test
-    public void shouldPayBollAmountWithBalanceLimit() {
+    public void shouldPayBollAmountWithBalanceLimit() { // оплата в сумме начального баланса и кредитного лимита
         CreditAccount account = new CreditAccount(
                 1_000,
                 5_000,
@@ -101,7 +101,7 @@ public class CreditAccountTest {
     }
 
     @Test
-    public void shouldPayWithPositiveBalance() {
+    public void shouldPayWithPositiveBalance() { // оплата с начальным балансом в пределах кредитного лимита
         CreditAccount account = new CreditAccount(
                 1_000,
                 5_000,
@@ -112,7 +112,7 @@ public class CreditAccountTest {
     }
 
     @Test
-    public void shouldPayWithZeroBalance() {
+    public void shouldPayWithZeroBalance() { // оплата с нулевым балансом в пределах кредитного лимита
         CreditAccount account = new CreditAccount(
                 0,
                 5_000,
@@ -123,7 +123,7 @@ public class CreditAccountTest {
     }
 
     @Test
-    public void shouldPayAmountAboveLimit() {
+    public void shouldPayAmountAboveLimit() { // оплата в сумме, превышающей кредитный лимит
         CreditAccount account = new CreditAccount(
                 0,
                 5_000,
@@ -134,7 +134,7 @@ public class CreditAccountTest {
     }
 
     @Test
-    public void shouldPayAmountWithBalanceLimit() {
+    public void shouldPayAmountWithBalanceLimit() { // оплата в сумме начального баланса и кредитного лимита
         CreditAccount account = new CreditAccount(
                 1_000,
                 5_000,
@@ -145,7 +145,7 @@ public class CreditAccountTest {
     }
 
     @Test
-    public void shouldPayAmountAboveBalanceLimit() {
+    public void shouldPayAmountAboveBalanceLimit() { // оплата в сумме, превышающей начальный баланс и кредитный лимит
         CreditAccount account = new CreditAccount(
                 1_000,
                 5_000,
@@ -156,7 +156,7 @@ public class CreditAccountTest {
     }
 
     @Test
-    public void shouldYearChangePositiveBalance() {
+    public void shouldYearChangePositiveBalance() { // проценты на положительный остаток на счете
         CreditAccount account = new CreditAccount(
                 1_000,
                 5_000,
@@ -167,13 +167,27 @@ public class CreditAccountTest {
     }
 
     @Test
-    public void shouldYearChangeNegativeBalance() {
+    public void shouldYearChangeNegativeBalance() {   //  проценты на отрицательный остаток на счете
         CreditAccount account = new CreditAccount(
                 0,
                 5_000,
                 15
         );
         account.pay(1_000);
+
         Assertions.assertEquals(- 150, account.yearChange());
     }
+
+    @Test
+    public void shouldAddToNegativeBalance() { // пополнение счета с отрицательным балансом
+        CreditAccount account = new CreditAccount(
+                0,
+                5_000,
+                15
+        );
+        account.pay(1000);
+        account.add(3_000);
+        Assertions.assertEquals(2_000, account.getBalance());
+    }
+
 }
