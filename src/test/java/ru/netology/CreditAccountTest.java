@@ -162,16 +162,18 @@ public class CreditAccountTest {
                 5_000,
                 15
         );
-        Assertions.assertEquals(150, account.yearChange());
+        Assertions.assertEquals(0, account.yearChange());
+
     }
 
     @Test
     public void shouldYearChangeNegativeBalance() {
         CreditAccount account = new CreditAccount(
-                1_000,
+                0,
                 5_000,
                 15
         );
+        account.pay(1_000);
         Assertions.assertEquals(- 150, account.yearChange());
     }
 }
