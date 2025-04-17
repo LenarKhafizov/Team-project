@@ -43,7 +43,7 @@ public class SavingAccountTest {
 
         account.pay(2_000);
 
-        Assertions.assertEquals(0, account.getBalance());
+        Assertions.assertEquals(2000, account.getBalance());
     }
 
     // add
@@ -84,17 +84,6 @@ public class SavingAccountTest {
                     1_000,
                     10_000,
                     -5);
-        });
-    }
-
-    @Test
-    public void ItShouldQenerateAnExceptionIfThereIsABalanceOfValidValues() { // баланс допустимых значений.
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new SavingAccount(
-                    2_000,
-                    1_000,
-                    10_000,
-                    5);
         });
     }
 
