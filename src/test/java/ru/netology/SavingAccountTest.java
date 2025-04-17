@@ -180,5 +180,3 @@ public class SavingAccountTest {
         Assertions.assertEquals(10_000, account.getMaxBalance());
     }
 }
-
-

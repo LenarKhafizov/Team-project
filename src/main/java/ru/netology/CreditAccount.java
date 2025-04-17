@@ -17,10 +17,14 @@ public class CreditAccount extends Account {
      * @param rate - неотрицательное число, ставка кредитования для расчёта долга за отрицательный баланс
      */
     public CreditAccount(int initialBalance, int creditLimit, int rate) {
-        if (rate <= 0) {
-            throw new IllegalArgumentException(
-                    "Накопительная ставка не может быть отрицательной, а у вас: " + rate
-            );
+        if (initialBalance < 0) {
+            throw new IllegalArgumentException("Начальный баланс не может быть отрицательным: " + initialBalance);
+        }
+        if (creditLimit < 0) {
+            throw new IllegalArgumentException("Кредитный лимит не может быть отрицательным: " + creditLimit);
+        }
+        if (rate < 0) {
+            throw new IllegalArgumentException("Ставка не может быть отрицательной: " + rate);
         }
         this.balance = initialBalance;
         this.creditLimit = creditLimit;
@@ -41,14 +45,13 @@ public class CreditAccount extends Account {
         if (amount <= 0) {
             return false;
         }
-        balance = balance - amount;
-        if (balance > -creditLimit) {
-            balance = -amount;
-            return true;
-        } else {
+
+        if (balance - amount < -creditLimit) {
             return false;
         }
-    }
+            balance -= amount;
+            return true;
+        }
 
     /**
      * Операция пополнения карты на указанную сумму.
@@ -66,10 +69,12 @@ public class CreditAccount extends Account {
         if (amount <= 0) {
             return false;
         }
-        balance = amount;
-        return true;
+        if (balance + amount <= creditLimit) {
+            balance = balance + amount;
+            return true;
+        }
+        return false;
     }
-
     /**
      * Операция расчёта процентов на отрицательный баланс счёта при условии, что
      * счёт не будет меняться год. Сумма процентов приводится к целому
@@ -80,6 +85,9 @@ public class CreditAccount extends Account {
      */
     @Override
     public int yearChange() {
+        if (balance >= 0) {
+            return 0;
+        }
         return balance / 100 * rate;
     }
 
